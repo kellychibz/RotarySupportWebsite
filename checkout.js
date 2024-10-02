@@ -60,7 +60,7 @@ async function handleCheckout(event) {
     const token = parseTokenFromResponse(responseText);  // Extract the token from the XML response
 
     // Redirect to the payment URL with the generated token
-    const paymentUrl = `https://secure.3gdirectpay.com/payv2.php?ID=${token}`;
+    const paymentUrl = `https://secure.3gdirectpay.com/payv3.php?ID=${token}`;
     window.location.href = paymentUrl;
 
   } catch (error) {
