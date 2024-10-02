@@ -2,7 +2,7 @@ document.getElementById('checkout-form').addEventListener('submit', handleChecko
 document.getElementById('vip').addEventListener('change', updatePrice);
 document.getElementById('quantity').addEventListener('input', updatePrice);
 
-const companyToken = 'B3F59BE7-0756-420E-BB88-1D98E7A6B040';  // Test Company Token from GPO Pay
+const companyToken = '732CDD7C-34B3-4506-ACF6-B03F94FB44C8';  // Test Company Token from GPO Pay
 const apiUrl = 'https://secure.3gdirectpay.com/API/v6/';
 
 /* Function to handle the checkout process */
@@ -34,7 +34,7 @@ async function handleCheckout(event) {
       </Transaction>
       <Services>
         <Service>
-          <ServiceType>${vipType === 'VIP' ? 85325 : 54841}</ServiceType>
+          <ServiceType>86278</ServiceType>
           <ServiceDescription>${vipType} Conference Ticket</ServiceDescription>
           <ServiceDate>${new Date().toISOString().split('T')[0]}</ServiceDate>
         </Service>
