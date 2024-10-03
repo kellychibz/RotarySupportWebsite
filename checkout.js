@@ -1,3 +1,4 @@
+async function handleCheckout(event) {
 const myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/xml");
 
@@ -10,7 +11,11 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch("https://secure.3gdirectpay.com/API/v6/", requestOptions)
-  .then((response) => response.text())
-  .then((result) => console.log(result))
-  .catch((error) => console.error(error));
+try {
+  const response = await fetch("https://secure.3gdirectpay.com/API/v6/", requestOptions);
+  const result = await response.text();
+  console.log(result)
+} catch (error) {
+  console.error(error);
+};
+}
