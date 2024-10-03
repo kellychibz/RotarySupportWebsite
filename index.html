@@ -1,12 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rotary Discon 2025 Checkout</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>API</h1>
-    <script src="https://kellychibz.github.io/checkout.js"></script>
+
+  <!-- Main hero section -->
+  <header class="hero-section">
+    <img src="images/rotary-logo.png" alt="Rotary Logo" class="rotary-logo">
+    <div class="hero-text">
+      <h1>Rotary Discon 2025</h1>
+      <p>Leaders and Changemakers</p>
+    </div>
+  </header>
+
+  <!-- Checkout section -->
+  <div class="checkout-section">
+    <div class="checkout-form">
+      <h2>Checkout</h2>
+      <form id="checkout-form">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" placeholder="Enter your name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="Enter your email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="vip">VIP</label>
+          <select id="vip">
+            <option value="Standard">Standard</option>
+            <option value="VIP">VIP</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="quantity">Quantity</label>
+          <input type="number" id="quantity" value="1" min="1" required>
+        </div>
+
+        <button type="submit">Checkout</button>
+      </form>
+    </div>
+
+    <div class="info-section">
+      <h2>Join us</h2>
+      <p>For an impactful conference bringing together leaders and changemakers!</p>
+      <ul>
+        <li>Network with global leaders</li>
+        <li>Gain insights from world-renowned speakers</li>
+        <li>Be part of impactful change initiatives</li>
+      </ul>
+      <p><strong>Price: </strong>$<span id="price">100</span></p>
+      <button type="button" class="secondary-btn">Checkout</button>
+    </div>
+  </div>
+
+  <script src="/checkout.js"></script>
 </body>
 </html>
