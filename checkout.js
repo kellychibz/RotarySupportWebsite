@@ -1,98 +1,16 @@
-document.getElementById('checkout-form').addEventListener('submit', handleCheckout);
-document.getElementById('vip').addEventListener('change', updatePrice);
-document.getElementById('quantity').addEventListener('input', updatePrice);
+const myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/xml");
 
-const companyToken = '732CDD7C-34B3-4506-ACF6-B03F94FB44C8';  // Test Company Token from GPO Pay
-const apiUrl = 'https://secure.3gdirectpay.com/API/v6/';
+const raw = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<API3G>\r\n  <CompanyToken>B3F59BE7-0756-420E-BB88-1D98E7A6B040</CompanyToken>\r\n  <Request>createToken</Request>\r\n  <Transaction>\r\n    <PaymentAmount>50.00</PaymentAmount>\r\n    <PaymentCurrency>USD</PaymentCurrency>\r\n    <CompanyRef>49FKEOA</CompanyRef>\r\n    <RedirectURL>http://www.domain.com/payurl.php</RedirectURL>\r\n    <BackURL>http://www.domain.com/backurl.php </BackURL>\r\n    <CompanyRefUnique>0</CompanyRefUnique>\r\n    <PTL>5</PTL>\r\n  </Transaction>\r\n  <Services>\r\n    <Service>\r\n      <ServiceType>85325</ServiceType>\r\n      <ServiceDescription>Flight from Nairobi to Diani</ServiceDescription>\r\n      <ServiceDate>2013/12/20 19:00</ServiceDate>\r\n    </Service>\r\n  </Services>\r\n</API3G>";
 
-/* Function to handle the checkout process */
-async function handleCheckout(event) {
-  event.preventDefault();
+const requestOptions = {
+  method: "POST",
+  headers: myHeaders,
+  body: raw,
+  redirect: "follow"
+};
 
-  const name = document.getElementById('name').value;
-  const email = document.getElementById('email').value;
-  const vipType = document.getElementById('vip').value;
-  const quantity = parseInt(document.getElementById('quantity').value);
-  const paymentAmount = vipType === 'VIP' ? 200 * quantity : 100 * quantity;  // Dynamic price based on VIP and quantity
-  const redirectUrl = 'http://www.yoursite.com/success.html';  // Change this to your actual success URL
-  const backUrl = 'http://www.yoursite.com/cancel.html';  // Change this to your actual back/cancel URL
-
-  // Create the XML request for GPO Pay API
-  const xmlData = `
-    <?xml version='1.0' encoding='utf-8'?>
-    <API3G>
-      <CompanyToken>${companyToken}</CompanyToken>
-      <Request>createToken</Request>
-      <Transaction>
-        <PaymentAmount>${paymentAmount.toFixed(2)}</PaymentAmount>
-        <PaymentCurrency>USD</PaymentCurrency>
-        <CompanyRef>${generateCompanyRef()}</CompanyRef>
-        <RedirectURL>${redirectUrl}</RedirectURL>
-        <BackURL>${backUrl}</BackURL>
-        <CompanyRefUnique>0</CompanyRefUnique>
-        <PTL>5</PTL>
-      </Transaction>
-      <Services>
-        <Service>
-          <ServiceType>86278</ServiceType>
-          <ServiceDescription>${vipType} Conference Ticket</ServiceDescription>
-          <ServiceDate>${new Date().toISOString().split('T')[0]}</ServiceDate>
-        </Service>
-      </Services>
-    </API3G>
-  `;
-
-  try {
-    const tokenResponse = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/xml',
-        'Accept': 'application/xml'
-      },
-      body: xmlData
-    });
-
-    if (!tokenResponse.ok) {
-      throw new Error('Error creating transaction token');
-    }
-
-    const responseText = await tokenResponse.text();
-    const token = parseTokenFromResponse(responseText);  // Extract the token from the XML response
-
-    // Redirect to the payment URL with the generated token
-    const paymentUrl = `https://secure.3gdirectpay.com/payv3.php?ID=${token}`;
-    window.location.href = paymentUrl;
-
-  } catch (error) {
-    console.error('Checkout error:', error);
-    alert('There was an error processing the payment. Please try again.');
-  }
-}
-
-/* Function to update price based on ticket type and quantity */
-function updatePrice() {
-  const vipType = document.getElementById('vip').value;
-  const quantity = document.getElementById('quantity').value;
-  let price = vipType === 'VIP' ? 200 : 100;
-  price *= quantity;
-
-  document.getElementById('price').textContent = price;
-}
-
-/* Utility function to generate a unique reference */
-function generateCompanyRef() {
-  return Math.random().toString(36).substring(2, 10).toUpperCase();
-}
-
-/* Function to parse the token from the XML response */
-function parseTokenFromResponse(responseText) {
-  const parser = new DOMParser();
-  const xmlDoc = parser.parseFromString(responseText, "application/xml");
-  const tokenElement = xmlDoc.getElementsByTagName('TransToken')[0];
-
-  if (!tokenElement) {
-    throw new Error('Token not found in API response');
-  }
-
-  return tokenElement.textContent;
-}
+fetch("https://secure.3gdirectpay.com/API/v6/", requestOptions)
+  .then((response) => response.text())
+  .then((result) => console.log(result))
+  .catch((error) => console.error(error));
