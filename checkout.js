@@ -1,4 +1,7 @@
+console.log("In JS");
+document.getElementById('checkout-form').addEventListener('submit', handleCheckout);
 async function handleCheckout(event) {
+event.preventDefault();
 const myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/xml");
 
